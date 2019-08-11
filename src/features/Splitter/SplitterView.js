@@ -18,7 +18,9 @@ export default class SplitterView extends React.Component {
   render() {
     return (
       <Card>
-        <FileChooser onFileReady={file => this.props.onSplit(file)} />
+        <FileChooser
+          onFileReady={(file, time) => this.props.onSplit(file, time)}
+        />
       </Card>
     );
   }

@@ -9,9 +9,9 @@ export default class SplitterContainer extends React.Component {
   render() {
     return (
       <SplitterView
-        onSplit={async file => {
+        onSplit={async (file, time) => {
           try {
-            const res = await splitVideo(file, 2.5);
+            const res = await splitVideo(file, time);
             console.log(res);
           } catch (err) {
             console.log(err);
