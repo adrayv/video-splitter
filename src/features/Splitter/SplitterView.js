@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import FileChooser from "../FileChooser";
+import TimeChooser from "../TimeChooser";
+import Submitter from "../Submitter";
 
 const Card = styled.div`
   width: 500px;
@@ -11,16 +13,17 @@ const Card = styled.div`
   box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.15);
 `;
 
+// onFileReady={(file, time) => this.props.onSplit(file, time)}
 export default class SplitterView extends React.Component {
   static propTypes = {
-    onSplit: PropTypes.func.isRequired
+    isVideoChosen: PropTypes.bool,
+    isTimeChosen: PropTypes.bool
   };
   render() {
     return (
       <Card>
-        <FileChooser
-          onFileReady={(file, time) => this.props.onSplit(file, time)}
-        />
+        {!this.props.isVideoChosen ? <FileChooser /> : <TimeChooser />}
+        {this.props.isVideoChosen && this.props.isTimeChosen && <Submitter />}
       </Card>
     );
   }

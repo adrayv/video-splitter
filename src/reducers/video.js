@@ -23,23 +23,23 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actions.SET_VIDEO_URL:
       return {
-        videoDataUrl: action.payload.url,
-        ...state
+        ...state,
+        videoDataUrl: action.payload.url
       };
     case actions.SET_VIDEO_DURATION:
       return {
-        videoDuration: action.payload.duration,
-        ...state
+        ...state,
+        videoDuration: action.payload.duration
       };
     case actions.SET_VIDEO_SZ:
       return {
-        videoSize: action.payload.size,
-        ...state
+        ...state,
+        videoSize: action.payload.size
       };
     case actions.SET_TIME_TO_SPLIT:
       return {
-        timeToSplit: action.payload.time,
-        ...state
+        ...state,
+        timeToSplit: action.payload.time
       };
     default:
       return state;

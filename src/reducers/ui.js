@@ -15,13 +15,13 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actions.SET_LOADING_ON:
       return {
-        isLoading: true,
-        ...state
+        ...state,
+        isLoading: true
       };
     case actions.SET_LOADING_OFF:
       return {
-        isLoading: false,
-        ...state
+        ...state,
+        isLoading: false
       };
     default:
       return state;

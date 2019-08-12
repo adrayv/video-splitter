@@ -1,23 +1,31 @@
 import React from "react";
+import { connect } from "react-redux";
 import SplitterView from "./SplitterView";
-import { splitVideo } from "../../services/cloudinary";
+import { selectors } from "../../reducers/video";
 
-const movieUrl =
-  "https://trello-attachments.s3.amazonaws.com/5d3dfe6d766a108475bbb5dc/5d3e316005e86f8bac935eae/d652a5b9a1ea92968cbf74e2c54377a7/movie.mp4";
-
-export default class SplitterContainer extends React.Component {
+class SplitterContainer extends React.Component {
   render() {
     return (
       <SplitterView
-        onSplit={async (file, time) => {
-          try {
-            const res = await splitVideo(file, time);
-            console.log(res);
-          } catch (err) {
-            console.log(err);
-          }
-        }}
+        isVideoChosen={this.props.isVideoChosen}
+        isTimeChosen={this.props.isTimeChosen}
       />
     );
   }
 }
+
+export default connect(
+  state => {
+    return {
+      isVideoChosen: Boolean(
+        selectors.getVideoUrl(state.video) &&
+          selectors.getVideoDuration(state.video) &&
+          selectors.getVideoSize(state.video)
+      ),
+      isTimeChosen: Boolean(selectors.getTimeToSplit(state.video))
+    };
+  },
+  dispatch => {
+    return {};
+  }
+)(SplitterContainer);
