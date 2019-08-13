@@ -9,7 +9,11 @@ export const actions = {
 };
 
 export const selectors = {
-  getResults: state => [state.leftVideo, state.screenshot, state.rightVideo]
+  getResults: state => ({
+    leftVideo: state.leftVideo,
+    screenshot: state.screenshot,
+    rightVideo: state.rightVideo
+  })
 };
 
 export default (state = initialState, action) => {

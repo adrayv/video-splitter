@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import SplitterView from "./SplitterView";
 import { selectors } from "../../reducers/video";
+import { selectors as resultSelectors } from "../../reducers/results";
 
 class SplitterContainer extends React.Component {
   render() {
@@ -9,6 +10,7 @@ class SplitterContainer extends React.Component {
       <SplitterView
         isVideoChosen={this.props.isVideoChosen}
         isTimeChosen={this.props.isTimeChosen}
+        areResultsAvailable={this.props.areResultsAvailable}
       />
     );
   }
@@ -22,7 +24,10 @@ export default connect(
           selectors.getVideoDuration(state.video) &&
           selectors.getVideoSize(state.video)
       ),
-      isTimeChosen: Boolean(selectors.getTimeToSplit(state.video))
+      isTimeChosen: Boolean(selectors.getTimeToSplit(state.video)),
+      areResultsAvailable: Object.values(
+        resultSelectors.getResults(state.results)
+      ).some(result => Boolean(result))
     };
   },
   dispatch => {
