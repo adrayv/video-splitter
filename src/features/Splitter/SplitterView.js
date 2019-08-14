@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import FileChooser from "../FileChooser";
 import TimeChooser from "../TimeChooser";
 import Submitter from "../Submitter";
+import ScreenshotPreview from "../ScreenshotPreview";
 import Results from "../Results";
 
 const Card = styled.div`
@@ -28,7 +29,12 @@ export default class SplitterView extends React.Component {
         return (
           <React.Fragment>
             <TimeChooser />
-            {this.props.isTimeChosen && <Submitter />}
+            {this.props.isTimeChosen && (
+              <React.Fragment>
+                <ScreenshotPreview />
+                <Submitter />
+              </React.Fragment>
+            )}
           </React.Fragment>
         );
       } else {

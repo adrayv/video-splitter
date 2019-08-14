@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import SplitterView from "./SplitterView";
 import { selectors } from "../../reducers/video";
+import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
 import { selectors as resultSelectors } from "../../reducers/results";
 
 class SplitterContainer extends React.Component {
@@ -22,7 +23,8 @@ export default connect(
       isVideoChosen: Boolean(
         selectors.getVideoUrl(state.video) &&
           selectors.getVideoDuration(state.video) &&
-          selectors.getVideoSize(state.video)
+          selectors.getVideoSize(state.video) &&
+          cloudinarySelectors.getResourceId(state.cloudinary)
       ),
       isTimeChosen: Boolean(selectors.getTimeToSplit(state.video)),
       areResultsAvailable: Object.values(

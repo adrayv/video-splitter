@@ -7,11 +7,11 @@ const cloudinary = new c.Cloudinary({
   api_secret: String(process.env.REACT_APP_CLOUDINARY_API_SECRET)
 });
 
-export async function splitVideo(videoDataURI, timeToSplit) {
+export const uploadVideo = async videoSrc => {
   const res = await axios.post(
     `https://api.cloudinary.com/v1_1/adrayv/video/upload`,
     {
-      file: videoDataURI,
+      file: videoSrc,
       upload_preset: "ieno9k19"
     }
   );
@@ -22,22 +22,32 @@ export async function splitVideo(videoDataURI, timeToSplit) {
   let cloudinaryResourceId =
     cloudinaryResourceUrl[cloudinaryResourceUrl.length - 1];
 
-  const leftVidUrl = cloudinary.video_url(cloudinaryResourceId, {
+  return cloudinaryResourceId;
+};
+
+export const getLeftVideoByTime = (cloudinaryResourceId, timeToSplit) => {
+  return cloudinary.video_url(cloudinaryResourceId, {
     start_offset: 0,
     end_offset: timeToSplit
   });
+};
 
-  const rightVidUrl = cloudinary.video_url(cloudinaryResourceId, {
+export const getRightVideoByTime = (cloudinaryResourceId, timeToSplit) => {
+  return cloudinary.video_url(cloudinaryResourceId, {
     start_offset: timeToSplit,
     end_offset: "100p"
   });
+};
 
-  const screenShotUrl =
-    String(rightVidUrl).substr(0, rightVidUrl.length - 4) + ".jpg";
+export const getScreenshotByTime = (cloudinaryResourceId, timeToSplit) => {
+  const rightVidUrl = getRightVideoByTime(cloudinaryResourceId, timeToSplit);
+  return String(rightVidUrl).substr(0, rightVidUrl.length - 4) + ".jpg";
+};
 
+export const splitVideoByResourceId = (cloudinaryResourceId, timeToSplit) => {
   return {
-    leftVidUrl,
-    rightVidUrl,
-    screenShotUrl
+    leftVidUrl: getLeftVideoByTime(cloudinaryResourceId, timeToSplit),
+    rightVidUrl: getRightVideoByTime(cloudinaryResourceId, timeToSplit),
+    screenShotUrl: getScreenshotByTime(cloudinaryResourceId, timeToSplit)
   };
-}
+};
