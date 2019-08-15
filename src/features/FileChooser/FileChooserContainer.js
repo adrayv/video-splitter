@@ -14,7 +14,10 @@ class FileChooserContainer extends React.Component {
           this.props.setVideoData(dataSrc);
         }}
         onVideoSizeReady={this.props.setVideoSize}
-        onVideoDurationReady={this.props.setVideoDuration}
+        onVideoDurationReady={duration => {
+          this.props.setChosenTime(duration / 2);
+          this.props.setVideoDuration(duration);
+        }}
       />
     );
   }
@@ -33,7 +36,8 @@ export default connect(
         dispatch(videoActions.setVideoSize(sz));
       },
       setVideoDuration: duration =>
-        dispatch(videoActions.setVideoDuration(duration))
+        dispatch(videoActions.setVideoDuration(duration)),
+      setChosenTime: time => dispatch(videoActions.setTimeToSplit(time))
     };
   }
 )(FileChooserContainer);
