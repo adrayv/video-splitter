@@ -5,7 +5,8 @@ const initialState = {
 };
 
 export const actions = {
-  SET_RESULTS: "SET_RESULTS"
+  SET_RESULTS: "SET_RESULTS",
+  RESET_RESULTS: "RESET_RESULTS"
 };
 
 export const selectors = {
@@ -25,6 +26,8 @@ export default (state = initialState, action) => {
         rightVideo: action.payload.right,
         screenshot: action.payload.screenshot
       };
+    case actions.RESET_RESULTS:
+      return initialState;
     default:
       return state;
   }

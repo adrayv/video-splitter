@@ -6,6 +6,7 @@ import TimeChooser from "../TimeChooser";
 import Submitter from "../Submitter";
 import ScreenshotPreview from "../ScreenshotPreview";
 import Results from "../Results";
+import ResetResults from "../ResetResults";
 
 const Card = styled.div`
   width: 500px;
@@ -23,7 +24,12 @@ export default class SplitterView extends React.Component {
   };
   viewLogic = () => {
     if (this.props.areResultsAvailable) {
-      return <Results />;
+      return (
+        <React.Fragment>
+          <Results />
+          <ResetResults />
+        </React.Fragment>
+      );
     } else {
       if (this.props.isVideoChosen) {
         return (

@@ -10,3 +10,9 @@ export const setResults = ({ leftVideo, rightVideo, screenshot }) => {
     }
   };
 };
+
+export const resetState = () => {
+  return {
+    type: actions.RESET_RESULTS
+  };
+};
