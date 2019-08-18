@@ -7,6 +7,7 @@ import Submitter from "../Submitter";
 import ScreenshotPreview from "../ScreenshotPreview";
 import Results from "../Results";
 import ResetResults from "../ResetResults";
+import TimestampPreview from "../TimestampPreview";
 
 const Card = styled.div`
   width: 500px;
@@ -37,6 +38,7 @@ export default class SplitterView extends React.Component {
             <TimeChooser />
             {this.props.isTimeChosen && (
               <React.Fragment>
+                <TimestampPreview />
                 <ScreenshotPreview />
                 <Submitter />
               </React.Fragment>

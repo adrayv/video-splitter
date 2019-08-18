@@ -21,7 +21,7 @@ export default class TimeChooserView extends React.Component {
         max={this.props.maxTime}
         value={this.props.timeChosen}
         onChange={this.handleChange}
-        step={0.1}
+        step={0.01}
       />
     );
   }
