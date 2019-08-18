@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import debounce from "../../utils/debounce";
+// import debounce from "../../utils/debounce";
 
 export default class TimeChooserView extends React.Component {
   static propTypes = {
@@ -10,10 +10,8 @@ export default class TimeChooserView extends React.Component {
     onTimeChange: PropTypes.func.isRequired
   };
   handleChange = e => {
-    const time = e.target.value;
-    return debounce(1000, () => this.props.onTimeChange(Number(time))).call(
-      this
-    );
+    const time = Number(e.target.value);
+    this.props.onTimeChange(time);
   };
   render() {
     return (
