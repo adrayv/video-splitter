@@ -4,21 +4,30 @@ import * as videoActions from "../../actions/video";
 import * as cloudinaryActions from "../../actions/cloudinary";
 import { uploadVideo } from "../../services/cloudinary";
 import FileChooserView from "./FileChooserView";
+import { Context } from "../../contexts/ui";
 
 class FileChooserContainer extends React.Component {
   render() {
     return (
-      <FileChooserView
-        onVideoUrlReady={async dataSrc => {
-          this.props.setCloudinaryResourceId(await uploadVideo(dataSrc));
-          this.props.setVideoData(dataSrc);
+      <Context.Consumer>
+        {context => {
+          return (
+            <FileChooserView
+              onVideoUrlReady={async dataSrc => {
+                context.setLoadingOn();
+                this.props.setCloudinaryResourceId(await uploadVideo(dataSrc));
+                context.setLoadingOff();
+                this.props.setVideoData(dataSrc);
+              }}
+              onVideoSizeReady={this.props.setVideoSize}
+              onVideoDurationReady={duration => {
+                this.props.setChosenTime(duration / 2);
+                this.props.setVideoDuration(duration);
+              }}
+            />
+          );
         }}
-        onVideoSizeReady={this.props.setVideoSize}
-        onVideoDurationReady={duration => {
-          this.props.setChosenTime(duration / 2);
-          this.props.setVideoDuration(duration);
-        }}
-      />
+      </Context.Consumer>
     );
   }
 }

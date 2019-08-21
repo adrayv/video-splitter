@@ -8,6 +8,7 @@ import ScreenshotPreview from "../ScreenshotPreview";
 import Results from "../Results";
 import ResetResults from "../ResetResults";
 import TimestampPreview from "../TimestampPreview";
+import Loader from "../Loader";
 
 const Card = styled.div`
   width: 500px;
@@ -15,6 +16,7 @@ const Card = styled.div`
   border-radius: 8px;
   border: 0.5px solid #eee;
   box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.15);
+  position: relative;
 `;
 
 export default class SplitterView extends React.Component {
@@ -51,6 +53,11 @@ export default class SplitterView extends React.Component {
     }
   };
   render() {
-    return <Card>{this.viewLogic()}</Card>;
+    return (
+      <Card>
+        <Loader />
+        {this.viewLogic()}
+      </Card>
+    );
   }
 }
