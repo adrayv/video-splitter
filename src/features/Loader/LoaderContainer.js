@@ -1,13 +1,13 @@
-import React from "react";
-import { Context } from "../../contexts/ui";
+import React, { useEffect, useContext } from "react";
+import Context, { Consumer } from "../../contexts/ui";
 import LoaderView from "./LoaderView";
 
-export default class LoaderContainer extends React.Component {
-  render() {
-    return (
-      <Context.Consumer>
-        {context => <LoaderView shouldShowLoader={context.state.isLoading} />}
-      </Context.Consumer>
-    );
-  }
-}
+export default () => {
+  const context = useContext(Context);
+  useEffect(() => console.log("NEW UI CONTEXT", context), [context]);
+  return (
+    <Consumer>
+      {context => <LoaderView shouldShowLoader={context.state.isLoading} />}
+    </Consumer>
+  );
+};

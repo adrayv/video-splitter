@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-export const Context = React.createContext();
+const Context = React.createContext();
+
+export const Consumer = Context.Consumer;
 
 export const Provider = props => {
   const [state, setState] = useState({
@@ -22,3 +24,5 @@ export const Provider = props => {
     </Context.Provider>
   );
 };
+
+export default Context;

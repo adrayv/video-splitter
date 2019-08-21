@@ -4,12 +4,12 @@ import * as videoActions from "../../actions/video";
 import * as cloudinaryActions from "../../actions/cloudinary";
 import { uploadVideo } from "../../services/cloudinary";
 import FileChooserView from "./FileChooserView";
-import { Context } from "../../contexts/ui";
+import { Consumer } from "../../contexts/ui";
 
 class FileChooserContainer extends React.Component {
   render() {
     return (
-      <Context.Consumer>
+      <Consumer>
         {context => {
           return (
             <FileChooserView
@@ -27,7 +27,7 @@ class FileChooserContainer extends React.Component {
             />
           );
         }}
-      </Context.Consumer>
+      </Consumer>
     );
   }
 }
