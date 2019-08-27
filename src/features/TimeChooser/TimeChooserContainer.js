@@ -1,32 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
-import { selectors } from "../../reducers/video";
+import React, { useContext } from "react";
 import TimeChooserView from "./TimeChooserView";
-import * as videoActions from "../../actions/video";
+import VideoContext from "../../contexts/video";
 
-class TimeChooserContainer extends React.Component {
-  render() {
-    return (
-      <TimeChooserView
-        minTime={0.05 * this.props.duration}
-        maxTime={this.props.duration - 0.05 * this.props.duration}
-        timeChosen={this.props.chosenTime}
-        onTimeChange={this.props.setTime}
-      />
-    );
-  }
-}
+const TimeChooserContainer = props => {
+  const videoContext = useContext(VideoContext);
+  const duration = videoContext.getVideoDuration();
+  const timeToSplit = videoContext.getTimeToSplit();
+  return (
+    <TimeChooserView
+      minTime={0.05 * duration}
+      maxTime={duration - 0.05 * duration}
+      timeChosen={timeToSplit}
+      onTimeChange={videoContext.setTimeToSplit}
+    />
+  );
+};
 
-export default connect(
-  state => {
-    return {
-      duration: selectors.getVideoDuration(state.video),
-      chosenTime: selectors.getTimeToSplit(state.video)
-    };
-  },
-  dispatch => {
-    return {
-      setTime: time => dispatch(videoActions.setTimeToSplit(time))
-    };
-  }
-)(TimeChooserContainer);
+export default TimeChooserContainer;

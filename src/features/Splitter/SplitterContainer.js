@@ -1,32 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import SplitterView from "./SplitterView";
-import { selectors } from "../../reducers/video";
 import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
 import { selectors as resultSelectors } from "../../reducers/results";
+import VideoContext from "../../contexts/video";
 
-class SplitterContainer extends React.Component {
-  render() {
-    return (
-      <SplitterView
-        isVideoChosen={this.props.isVideoChosen}
-        isTimeChosen={this.props.isTimeChosen}
-        areResultsAvailable={this.props.areResultsAvailable}
-      />
-    );
-  }
-}
+const SplitterContainer = props => {
+  const videoContext = useContext(VideoContext);
+  const isVideoChosen = Boolean(
+    videoContext.getVideoUrl() &&
+      videoContext.getVideoDuration() &&
+      videoContext.getVideoSize() &&
+      props.isCloudinaryReady
+  );
+
+  const isTimeChosen = Boolean(videoContext.getTimeToSplit());
+  return (
+    <SplitterView
+      isVideoChosen={isVideoChosen}
+      isTimeChosen={isTimeChosen}
+      areResultsAvailable={props.areResultsAvailable}
+    />
+  );
+};
 
 export default connect(
   state => {
     return {
-      isVideoChosen: Boolean(
-        selectors.getVideoUrl(state.video) &&
-          selectors.getVideoDuration(state.video) &&
-          selectors.getVideoSize(state.video) &&
-          cloudinarySelectors.getResourceId(state.cloudinary)
-      ),
-      isTimeChosen: Boolean(selectors.getTimeToSplit(state.video)),
+      isCloudinaryReady: cloudinarySelectors.getResourceId(state.cloudinary),
       areResultsAvailable: Object.values(
         resultSelectors.getResults(state.results)
       ).some(result => Boolean(result))

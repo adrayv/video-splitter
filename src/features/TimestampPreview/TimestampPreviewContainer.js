@@ -1,19 +1,10 @@
-import React from "react";
-import { connect } from "react-redux";
-import { selectors } from "../../reducers/video";
+import React, { useContext } from "react";
 import TimestampPreviewView from "./TimestampPreviewView";
+import VideoContext from "../../contexts/video";
 
-class TimestampPreviewContainer extends React.Component {
-  render() {
-    return <TimestampPreviewView seconds={this.props.timeToSplit} />;
-  }
-}
+const TimestampPreviewContainer = () => {
+  const videoContext = useContext(VideoContext);
+  return <TimestampPreviewView seconds={videoContext.getTimeToSplit()} />;
+};
 
-export default connect(
-  state => {
-    return {
-      timeToSplit: selectors.getTimeToSplit(state.video)
-    };
-  },
-  null
-)(TimestampPreviewContainer);
+export default TimestampPreviewContainer;

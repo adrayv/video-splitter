@@ -1,39 +1,35 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
-import { selectors } from "../../reducers/video";
 import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
 import { getScreenshotByTime } from "../../services/cloudinary";
 import ScreenshotPreviewView from "./ScreenshotPreviewView";
 import debounce from "../../utils/debounce";
+import VideoContext from "../../contexts/video";
 
-class ScreenshotPreviewContainer extends React.Component {
-  state = {
-    screenshotUrl: ""
-  };
+let self = { timerId: null };
 
-  debouncedGetScreenshot = () => {
+const ScreenshotPreviewContainer = props => {
+  const videoContext = useContext(VideoContext);
+  const [screenshotUrl, setScreenshotUrl] = useState("");
+  const debouncedGetScreenshot = () => {
     debounce(500, () => {
-      const screenshotUrl = getScreenshotByTime(
-        this.props.resourceId,
-        this.props.timeToSplit
+      const nextScreenshot = getScreenshotByTime(
+        props.resourceId,
+        videoContext.getTimeToSplit()
       );
-      if (this.state.screenshotUrl !== screenshotUrl) {
-        this.setState({ screenshotUrl });
+      if (screenshotUrl !== nextScreenshot) {
+        setScreenshotUrl(nextScreenshot);
       }
-    }).call(this);
+    }).call(self);
   };
-
-  render() {
-    this.debouncedGetScreenshot();
-    return <ScreenshotPreviewView imageSrc={this.state.screenshotUrl} />;
-  }
-}
+  debouncedGetScreenshot();
+  return <ScreenshotPreviewView imageSrc={screenshotUrl} />;
+};
 
 export default connect(
   state => {
     return {
-      resourceId: cloudinarySelectors.getResourceId(state.cloudinary),
-      timeToSplit: selectors.getTimeToSplit(state.video)
+      resourceId: cloudinarySelectors.getResourceId(state.cloudinary)
     };
   },
   null

@@ -1,29 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
-import { selectors as videoStateSelectors } from "../../reducers/video";
 import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
 import { setResults } from "../../actions/results";
 import { splitVideoByResourceId } from "../../services/cloudinary";
 import SubmitterView from "./SubmitterView";
+import VideoContext from "../../contexts/video";
 
-class SubmitterContainer extends React.Component {
-  splitVideo = () => {
+const SubmitterContainer = props => {
+  const videoContext = useContext(VideoContext);
+  const splitVideo = () => {
     const { leftVidUrl, rightVidUrl, screenShotUrl } = splitVideoByResourceId(
-      this.props.cloudinaryResourceId,
-      this.props.timeToSplit
+      props.cloudinaryResourceId,
+      videoContext.getTimeToSplit()
     );
-    this.props.setResults(leftVidUrl, rightVidUrl, screenShotUrl);
+    props.setResults(leftVidUrl, rightVidUrl, screenShotUrl);
   };
-  render() {
-    return <SubmitterView onSubmit={this.splitVideo} />;
-  }
-}
+  return <SubmitterView onSubmit={splitVideo} />;
+};
 
 export default connect(
   state => {
     return {
-      cloudinaryResourceId: cloudinarySelectors.getResourceId(state.cloudinary),
-      timeToSplit: videoStateSelectors.getTimeToSplit(state.video)
+      cloudinaryResourceId: cloudinarySelectors.getResourceId(state.cloudinary)
     };
   },
   dispatch => {
