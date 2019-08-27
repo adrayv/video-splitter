@@ -1,36 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import * as videoActions from "../../actions/video";
 import * as cloudinaryActions from "../../actions/cloudinary";
 import { uploadVideo } from "../../services/cloudinary";
 import FileChooserView from "./FileChooserView";
-import { Consumer } from "../../contexts/ui";
+import UIContext from "../../contexts/ui";
 
-class FileChooserContainer extends React.Component {
-  render() {
-    return (
-      <Consumer>
-        {context => {
-          return (
-            <FileChooserView
-              onVideoUrlReady={async dataSrc => {
-                context.setLoadingOn();
-                this.props.setCloudinaryResourceId(await uploadVideo(dataSrc));
-                context.setLoadingOff();
-                this.props.setVideoData(dataSrc);
-              }}
-              onVideoSizeReady={this.props.setVideoSize}
-              onVideoDurationReady={duration => {
-                this.props.setChosenTime(duration / 2);
-                this.props.setVideoDuration(duration);
-              }}
-            />
-          );
-        }}
-      </Consumer>
-    );
-  }
-}
+const FileChooserContainer = props => {
+  const uiContext = useContext(UIContext);
+  return (
+    <FileChooserView
+      onVideoUrlReady={async dataSrc => {
+        uiContext.setLoadingOn();
+        props.setCloudinaryResourceId(await uploadVideo(dataSrc));
+        uiContext.setLoadingOff();
+        props.setVideoData(dataSrc);
+      }}
+      onVideoSizeReady={props.setVideoSize}
+      onVideoDurationReady={duration => {
+        props.setChosenTime(duration / 2);
+        props.setVideoDuration(duration);
+      }}
+    />
+  );
+};
 
 export default connect(
   state => {

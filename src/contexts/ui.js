@@ -2,8 +2,6 @@ import React, { useState } from "react";
 
 const Context = React.createContext();
 
-export const Consumer = Context.Consumer;
-
 export const Provider = props => {
   const [state, setState] = useState({
     isLoading: false
