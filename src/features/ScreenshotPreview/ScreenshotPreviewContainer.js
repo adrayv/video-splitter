@@ -1,20 +1,20 @@
 import React, { useContext, useState } from "react";
-import { connect } from "react-redux";
-import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
 import { getScreenshotByTime } from "../../services/cloudinary";
 import ScreenshotPreviewView from "./ScreenshotPreviewView";
 import debounce from "../../utils/debounce";
 import VideoContext from "../../contexts/video";
+import CloudinaryContext from "../../contexts/cloudinary";
 
 let self = { timerId: null };
 
-const ScreenshotPreviewContainer = props => {
+export default () => {
   const videoContext = useContext(VideoContext);
+  const cloudinaryContext = useContext(CloudinaryContext);
   const [screenshotUrl, setScreenshotUrl] = useState("");
   const debouncedGetScreenshot = () => {
     debounce(500, () => {
       const nextScreenshot = getScreenshotByTime(
-        props.resourceId,
+        cloudinaryContext.getResourceId(),
         videoContext.getTimeToSplit()
       );
       if (screenshotUrl !== nextScreenshot) {
@@ -25,12 +25,3 @@ const ScreenshotPreviewContainer = props => {
   debouncedGetScreenshot();
   return <ScreenshotPreviewView imageSrc={screenshotUrl} />;
 };
-
-export default connect(
-  state => {
-    return {
-      resourceId: cloudinarySelectors.getResourceId(state.cloudinary)
-    };
-  },
-  null
-)(ScreenshotPreviewContainer);

@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
-import { connect } from "react-redux";
-import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
 import { splitVideoByResourceId } from "../../services/cloudinary";
 import SubmitterView from "./SubmitterView";
 import VideoContext from "../../contexts/video";
 import ResultsContext from "../../contexts/results";
+import CloudinaryContext from "../../contexts/cloudinary";
 
-const SubmitterContainer = props => {
+export default () => {
   const videoContext = useContext(VideoContext);
   const resultsContext = useContext(ResultsContext);
+  const cloudinaryContext = useContext(CloudinaryContext);
 
   const splitVideo = () => {
     const { leftVidUrl, rightVidUrl, screenShotUrl } = splitVideoByResourceId(
-      props.cloudinaryResourceId,
+      cloudinaryContext.getResourceId(),
       videoContext.getTimeToSplit()
     );
 
@@ -25,12 +25,3 @@ const SubmitterContainer = props => {
 
   return <SubmitterView onSubmit={splitVideo} />;
 };
-
-export default connect(
-  state => {
-    return {
-      cloudinaryResourceId: cloudinarySelectors.getResourceId(state.cloudinary)
-    };
-  },
-  null
-)(SubmitterContainer);

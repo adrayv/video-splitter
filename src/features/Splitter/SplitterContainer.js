@@ -1,19 +1,19 @@
 import React, { useContext } from "react";
-import { connect } from "react-redux";
 import SplitterView from "./SplitterView";
-import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
 import VideoContext from "../../contexts/video";
 import ResultsContext from "../../contexts/results";
+import CloudinaryContext from "../../contexts/cloudinary";
 
-const SplitterContainer = props => {
+export default () => {
   const videoContext = useContext(VideoContext);
   const resultsContext = useContext(ResultsContext);
+  const cloudinaryContext = useContext(CloudinaryContext);
 
   const isVideoChosen = Boolean(
     videoContext.getVideoUrl() &&
       videoContext.getVideoDuration() &&
       videoContext.getVideoSize() &&
-      props.isCloudinaryReady
+      cloudinaryContext.getResourceId()
   );
 
   const areResultsAvailable = Object.values(
@@ -29,14 +29,3 @@ const SplitterContainer = props => {
     />
   );
 };
-
-export default connect(
-  state => {
-    return {
-      isCloudinaryReady: cloudinarySelectors.getResourceId(state.cloudinary)
-    };
-  },
-  dispatch => {
-    return {};
-  }
-)(SplitterContainer);

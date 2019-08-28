@@ -1,19 +1,20 @@
 import React, { useContext } from "react";
-import { connect } from "react-redux";
-import * as cloudinaryActions from "../../actions/cloudinary";
 import { uploadVideo } from "../../services/cloudinary";
 import FileChooserView from "./FileChooserView";
 import UIContext from "../../contexts/ui";
 import VideoContext from "../../contexts/video";
+import CloudinaryContext from "../../contexts/cloudinary";
 
-const FileChooserContainer = props => {
+export default () => {
   const uiContext = useContext(UIContext);
   const videoContext = useContext(VideoContext);
+  const cloudinaryContext = useContext(CloudinaryContext);
+
   return (
     <FileChooserView
       onVideoUrlReady={async dataSrc => {
         uiContext.setLoadingOn();
-        props.setCloudinaryResourceId(await uploadVideo(dataSrc));
+        cloudinaryContext.setResourceId(await uploadVideo(dataSrc));
         uiContext.setLoadingOff();
         videoContext.setVideoUrl(dataSrc);
       }}
@@ -25,15 +26,3 @@ const FileChooserContainer = props => {
     />
   );
 };
-
-export default connect(
-  state => {
-    return {};
-  },
-  dispatch => {
-    return {
-      setCloudinaryResourceId: id =>
-        dispatch(cloudinaryActions.setResourceId(id))
-    };
-  }
-)(FileChooserContainer);

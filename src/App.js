@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { Provider as UIProvider } from "./contexts/ui";
 import { Provider as VideoProvider } from "./contexts/video";
 import { Provider as ResultsProvider } from "./contexts/results";
+import { Provider as CloudinaryProvider } from "./contexts/cloudinary";
 import store from "./store";
 
 export default () => (
@@ -11,7 +12,9 @@ export default () => (
     <UIProvider>
       <VideoProvider>
         <ResultsProvider>
-          <Splitter />
+          <CloudinaryProvider>
+            <Splitter />
+          </CloudinaryProvider>
         </ResultsProvider>
       </VideoProvider>
     </UIProvider>
