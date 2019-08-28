@@ -1,19 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useContext } from "react";
 import ResetResultsView from "./ResetResultsView";
-import { resetState } from "../../actions/results";
+import ResultsContext from "../../contexts/results";
 
-class ResetResultsContainer extends React.Component {
-  render() {
-    return <ResetResultsView onResetClick={this.props.reset} />;
-  }
-}
-
-export default connect(
-  null,
-  dispatch => {
-    return {
-      reset: () => dispatch(resetState())
-    };
-  }
-)(ResetResultsContainer);
+export default () => {
+  const resultsContext = useContext(ResultsContext);
+  return <ResetResultsView onResetClick={resultsContext.resetResults} />;
+};

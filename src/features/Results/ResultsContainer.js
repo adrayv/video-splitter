@@ -1,27 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
-import { selectors } from "../../reducers/results";
+import React, { useContext } from "react";
 import ResultsView from "./ResultsView";
+import ResultsContext from "../../contexts/results";
 
-class ResultsContainer extends React.Component {
-  render() {
-    return (
-      <ResultsView
-        leftVideoUrl={this.props.leftVideo}
-        rightVideoUrl={this.props.rightVideo}
-        screenshot={this.props.screenshot}
-      />
-    );
-  }
-}
-
-export default connect(
-  state => {
-    return {
-      ...selectors.getResults(state.results)
-    };
-  },
-  dispatch => {
-    return {};
-  }
-)(ResultsContainer);
+export default () => {
+  const resultsContext = useContext(ResultsContext);
+  return (
+    <ResultsView
+      leftVideoUrl={resultsContext.getLeftVideo()}
+      rightVideoUrl={resultsContext.getRightVideo()}
+      screenshot={resultsContext.getScreenshot()}
+    />
+  );
+};

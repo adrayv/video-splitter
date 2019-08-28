@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import { connect } from "react-redux";
 import SplitterView from "./SplitterView";
 import { selectors as cloudinarySelectors } from "../../reducers/cloudinary";
-import { selectors as resultSelectors } from "../../reducers/results";
 import VideoContext from "../../contexts/video";
+import ResultsContext from "../../contexts/results";
 
 const SplitterContainer = props => {
   const videoContext = useContext(VideoContext);
+  const resultsContext = useContext(ResultsContext);
+
   const isVideoChosen = Boolean(
     videoContext.getVideoUrl() &&
       videoContext.getVideoDuration() &&
@@ -14,12 +16,16 @@ const SplitterContainer = props => {
       props.isCloudinaryReady
   );
 
+  const areResultsAvailable = Object.values(
+    resultsContext.getAllResults()
+  ).some(result => Boolean(result));
+
   const isTimeChosen = Boolean(videoContext.getTimeToSplit());
   return (
     <SplitterView
       isVideoChosen={isVideoChosen}
       isTimeChosen={isTimeChosen}
-      areResultsAvailable={props.areResultsAvailable}
+      areResultsAvailable={areResultsAvailable}
     />
   );
 };
@@ -27,10 +33,7 @@ const SplitterContainer = props => {
 export default connect(
   state => {
     return {
-      isCloudinaryReady: cloudinarySelectors.getResourceId(state.cloudinary),
-      areResultsAvailable: Object.values(
-        resultSelectors.getResults(state.results)
-      ).some(result => Boolean(result))
+      isCloudinaryReady: cloudinarySelectors.getResourceId(state.cloudinary)
     };
   },
   dispatch => {
