@@ -19,7 +19,7 @@ const Card = styled.div`
   position: relative;
 `;
 
-export default class SplitterView extends React.Component {
+export default class SplitterView extends React.PureComponent {
   static propTypes = {
     isVideoChosen: PropTypes.bool,
     isTimeChosen: PropTypes.bool,

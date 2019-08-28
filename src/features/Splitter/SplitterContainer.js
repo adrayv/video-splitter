@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useMemo, useContext } from "react";
 import SplitterView from "./SplitterView";
 import VideoContext from "../../contexts/video";
 import ResultsContext from "../../contexts/results";
@@ -21,11 +21,13 @@ export default () => {
   ).some(result => Boolean(result));
 
   const isTimeChosen = Boolean(videoContext.getTimeToSplit());
-  return (
-    <SplitterView
-      isVideoChosen={isVideoChosen}
-      isTimeChosen={isTimeChosen}
-      areResultsAvailable={areResultsAvailable}
-    />
-  );
+  return useMemo(() => {
+    return (
+      <SplitterView
+        isVideoChosen={isVideoChosen}
+        isTimeChosen={isTimeChosen}
+        areResultsAvailable={areResultsAvailable}
+      />
+    );
+  }, [isVideoChosen, areResultsAvailable, isTimeChosen]);
 };

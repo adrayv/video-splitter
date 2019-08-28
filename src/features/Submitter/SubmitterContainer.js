@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { splitVideoByResourceId } from "../../services/cloudinary";
 import SubmitterView from "./SubmitterView";
 import VideoContext from "../../contexts/video";
@@ -10,18 +10,19 @@ export default () => {
   const resultsContext = useContext(ResultsContext);
   const cloudinaryContext = useContext(CloudinaryContext);
 
-  const splitVideo = () => {
-    const { leftVidUrl, rightVidUrl, screenShotUrl } = splitVideoByResourceId(
-      cloudinaryContext.getResourceId(),
-      videoContext.getTimeToSplit()
-    );
+  return useMemo(() => {
+    const splitVideo = () => {
+      const { leftVidUrl, rightVidUrl, screenShotUrl } = splitVideoByResourceId(
+        cloudinaryContext.getResourceId(),
+        videoContext.getTimeToSplit()
+      );
 
-    resultsContext.setResults({
-      leftVideo: leftVidUrl,
-      rightVideo: rightVidUrl,
-      screenshot: screenShotUrl
-    });
-  };
-
-  return <SubmitterView onSubmit={splitVideo} />;
+      resultsContext.setResults({
+        leftVideo: leftVidUrl,
+        rightVideo: rightVidUrl,
+        screenshot: screenShotUrl
+      });
+    };
+    return <SubmitterView onSubmit={splitVideo} />;
+  }, [videoContext, resultsContext, cloudinaryContext]);
 };
