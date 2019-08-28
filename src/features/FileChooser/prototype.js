@@ -34,9 +34,7 @@ export default class FileChooser extends React.Component {
     };
   };
   rangeInputHander = e => {
-    this.setState({ selectedTimeToSplit: e.target.value }, () =>
-      console.log(this.state.selectedTimeToSplit)
-    );
+    this.setState({ selectedTimeToSplit: e.target.value });
   };
   render() {
     if (!this.videoLoaded()) {

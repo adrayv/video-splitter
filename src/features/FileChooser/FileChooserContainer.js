@@ -10,7 +10,6 @@ export default () => {
   const videoContext = useContext(VideoContext);
   const cloudinaryContext = useContext(CloudinaryContext);
   return useMemo(() => {
-    console.log("file chooser render");
     return (
       <FileChooserView
         onVideoUrlReady={async dataSrc => {
